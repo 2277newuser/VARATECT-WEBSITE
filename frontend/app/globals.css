@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f7f5;
+  --foreground: #151515;
+  --muted: #777772;
+  --border: #deded9;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #151515;
+  color: #fff;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button,
+a,
+input,
+textarea {
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+button {
+  cursor: pointer;
+}
+
+section {
+  scroll-margin-top: 90px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1ee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa9a3;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #151515;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 75px;
+  }
+
+  section {
+    scroll-margin-top: 75px;
+  }
+}
+
+/* ==========================================================
+   NEW: EXTRA ANIMATION EFFECTS
+   ========================================================== */
+
+/* 1. Opening curtain: dark panel with the studio name that lifts
+      away when the site first loads (CSS only, no JavaScript). */
+body::after {
+  content: "VARATECT.";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #151515;
+  color: #f7f7f5;
+  font-size: 0.95rem;
+  letter-spacing: 0.45em;
+  pointer-events: none;
+  animation: curtain-lift 1.2s cubic-bezier(0.77, 0, 0.18, 1) 0.3s forwards;
+}
+
+@keyframes curtain-lift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* 2. Keyboard focus ring that fades in softly */
+:focus-visible {
+  outline: 1px solid #151515;
+  outline-offset: 4px;
+  animation: focus-in 0.25s ease;
+}
+
+@keyframes focus-in {
+  from {
+    outline-offset: 12px;
+    outline-color: transparent;
+  }
+}
+
+/* 3. Selection colour pop */
+::selection {
+  background: #151515;
+  color: #f7f7f5;
+}
+
+/* 4. Reusable helper classes - add them to any element:
+      <span className="float">  <h2 className="shimmer">  <a className="link-draw"> */
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    100deg,
+    currentColor 40%,
+    rgba(160, 160, 155, 0.4) 50%,
+    currentColor 60%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+.link-draw {
+  position: relative;
+  display: inline-block;
+}
+
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-draw:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* 5. Smooth image fade-in once loaded + gentle lift on hover for buttons */
+img {
+  animation: img-in 0.9s ease both;
+}
+
+@keyframes img-in {
+  from {
+    opacity: 0;
+  }
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    animation-delay: 0s !important;
+  }
+
+  body::after {
+    display: none;
+  }
+}
