@@ -1,13 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { MaskLine, ScrollProgress } from "./MotionKit";
-
-// Animated underline for nav links
-const navLink =
-  "relative py-1 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100";
+import SiteFooter from "./SiteFooter";
+import SiteHeader from "./SiteHeader";
 
 type Division = {
   number: string;
@@ -20,8 +17,6 @@ type Division = {
 };
 
 export default function DivisionPage({ division }: { division: Division }) {
-  const reduceMotion = useReducedMotion();
-
   // Parallax for the hero image
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -32,35 +27,28 @@ export default function DivisionPage({ division }: { division: Division }) {
   const textY = useTransform(scrollYProgress, [0, 1], ["0px", "-50px"]);
 
   const fadeUp = {
-    initial: reduceMotion ? false : { opacity: 0, y: 24 },
+    initial: { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.3 },
     transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f7f5] text-[#151515]">
+    <main className="min-h-screen bg-[#e8efe7] text-[#20231f]">
       <ScrollProgress />
-      <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f7f7f5]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-5 md:px-10">
-          <Link href="/" className="text-xl font-semibold tracking-[.22em]">VARATECT<span className="text-neutral-400">.</span></Link>
-          <nav className="hidden items-center gap-8 text-[10px] tracking-[.2em] md:flex">
-            <Link href="/#studio" className={navLink}>STUDIO</Link>
-            <Link href="/#services" className={navLink}>DIVISIONS</Link>
-            <Link href="/#contact" className={navLink}>CONTACT</Link>
-          </nav>
-          <Link href="/#contact" className="bg-black px-5 py-3 text-[10px] tracking-[.16em] text-white transition hover:bg-neutral-700">START A PROJECT ↗</Link>
-        </div>
-      </header>
+      <SiteHeader />
 
-      <section ref={heroRef} className="relative isolate flex min-h-[72vh] items-end overflow-hidden bg-black text-white md:min-h-[82vh]">
+      <section ref={heroRef} className="relative isolate flex min-h-[72vh] items-end overflow-hidden bg-[#26362f] text-white md:min-h-[82vh]">
+        <p className="absolute right-5 top-6 z-10 rounded-full bg-black/35 px-3 py-2 text-[9px] uppercase tracking-[0.14em] text-white/85 md:right-10">
+          Concept visualisation
+        </p>
         <motion.div
           aria-hidden
-          style={{ y: reduceMotion ? 0 : bgY }}
+          style={{ y: bgY }}
           className="absolute inset-x-0 -top-[15%] -z-20 h-[130%]"
         >
           <motion.div
-            initial={reduceMotion ? false : { scale: 1.12 }}
+            initial={{ scale: 1.12 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
             className="h-full w-full bg-cover bg-center"
@@ -69,7 +57,7 @@ export default function DivisionPage({ division }: { division: Division }) {
         </motion.div>
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
         <motion.div
-          style={{ y: reduceMotion ? 0 : textY }}
+          style={{ y: textY }}
           className="mx-auto w-full max-w-[1440px] px-5 pb-16 pt-32 md:px-10 md:pb-24"
         >
           <motion.p
@@ -97,7 +85,6 @@ export default function DivisionPage({ division }: { division: Division }) {
             {division.summary}
           </motion.p>
         </motion.div>
-        <div className="absolute bottom-7 right-6 hidden text-[9px] tracking-[.25em] text-white/60 md:block">DESIGNED WITH PURPOSE — VARATECT</div>
       </section>
 
       <section className="mx-auto grid max-w-[1440px] gap-12 px-5 py-20 md:grid-cols-[.7fr_1.3fr] md:px-10 md:py-32">
@@ -111,7 +98,7 @@ export default function DivisionPage({ division }: { division: Division }) {
             <p className="text-[10px] tracking-[.24em]">WHAT WE OFFER</p>
             <div className="mt-7 grid gap-4 sm:grid-cols-2">
               {division.includes.map((item, i) => (
-                <motion.div key={item} initial={reduceMotion ? false : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08 }} className="flex gap-4 border-b border-black/10 pb-4">
+                <motion.div key={item} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08 }} className="flex gap-4 border-b border-black/10 pb-4">
                   <span className="text-xs text-neutral-400">0{i + 1}</span>
                   <span className="text-sm">{item}</span>
                 </motion.div>
@@ -121,21 +108,17 @@ export default function DivisionPage({ division }: { division: Division }) {
         </motion.div>
       </section>
 
-      <section className="bg-black px-5 py-20 text-white md:px-10 md:py-28">
+      <section className="bg-[#26362f] px-5 py-20 text-[#f5f3ed] md:px-10 md:py-28">
         <motion.div {...fadeUp} className="mx-auto flex max-w-[1440px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-[10px] tracking-[.25em] text-white/50">HAVE A PROJECT IN MIND?</p>
-            <h2 className="mt-5 max-w-2xl text-5xl font-light leading-[1.02] tracking-[-.055em] md:text-7xl">Let’s shape something <span className="italic text-white/60">meaningful.</span></h2>
+            <h2 className="mt-5 max-w-2xl text-5xl font-light leading-[1.02] tracking-[-.055em] md:text-7xl">Let’s shape something <span className="italic text-[#d3b29f]">meaningful.</span></h2>
           </div>
           <a href={`mailto:studiovaratect@gmail.com?subject=${encodeURIComponent(`${division.name} enquiry`)}`} className="w-fit border-b border-white/60 pb-3 text-[10px] tracking-[.2em] transition hover:text-white/60">ENQUIRE ABOUT {division.name.toUpperCase()} ↗</a>
         </motion.div>
       </section>
 
-      <footer className="flex flex-col justify-between gap-5 px-5 py-8 text-[10px] tracking-[.15em] text-neutral-500 md:flex-row md:px-10">
-        <span>© 2026 VARATECT DESIGN STUDIO</span>
-        <Link href="/#services" className="text-black hover:opacity-50">← EXPLORE ALL DIVISIONS</Link>
-        <Link href="/" className="text-black hover:opacity-50">BACK TO HOME ↑</Link>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

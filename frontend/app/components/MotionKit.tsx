@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { motion, useScroll, useSpring } from "motion/react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -38,13 +38,11 @@ export function MaskLine({
   delay?: number;
   className?: string;
 }) {
-  const reduceMotion = useReducedMotion();
-
   return (
     <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
       <motion.span
         className={`block ${className}`}
-        initial={reduceMotion ? false : { y: "110%" }}
+        initial={{ y: "110%" }}
         animate={{ y: 0 }}
         transition={{ duration: 1, ease: EASE, delay }}
       >
@@ -68,12 +66,10 @@ export function RevealImage({
   alt: string;
   className?: string;
 }) {
-  const reduceMotion = useReducedMotion();
-
   return (
     <motion.div
       className="group overflow-hidden bg-[#e7e6e1]"
-      initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
+      initial={{ clipPath: "inset(0 0 100% 0)" }}
       whileInView={{ clipPath: "inset(0 0 0% 0)" }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.1, ease: EASE }}
@@ -81,7 +77,7 @@ export function RevealImage({
       <motion.img
         src={src}
         alt={alt}
-        initial={reduceMotion ? false : { scale: 1.25 }}
+        initial={{ scale: 1.25 }}
         whileInView={{ scale: 1 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 1.4, ease: EASE }}
@@ -101,13 +97,11 @@ export function DrawLine({
   className?: string;
   delay?: number;
 }) {
-  const reduceMotion = useReducedMotion();
-
   return (
     <motion.div
       aria-hidden
       className={`h-px w-full origin-left ${className}`}
-      initial={reduceMotion ? false : { scaleX: 0 }}
+      initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 1.2, ease: EASE, delay }}

@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7f5;
-  --foreground: #151515;
-  --muted: #777772;
-  --border: #deded9;
+  --background: #f5f3ed;
+  --foreground: #20231f;
 }
 
 @theme inline {
@@ -20,7 +18,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 90px;
+  scroll-padding-top: 88px;
   background: var(--background);
 }
 
@@ -29,15 +27,15 @@ body {
   min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: #151515;
-  color: #fff;
+  background: #a55f45;
+  color: #fffaf3;
 }
 
 a,
@@ -46,12 +44,12 @@ button {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 
 button {
   font: inherit;
+  cursor: pointer;
 }
 
 img,
@@ -60,182 +58,103 @@ video {
   max-width: 100%;
 }
 
-img {
-  height: auto;
-}
-
-button,
-a,
-input,
-textarea {
-  transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    opacity 0.3s ease;
-}
-
-button {
-  cursor: pointer;
-}
-
-section {
-  scroll-margin-top: 90px;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1ee;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #aaa9a3;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #151515;
-}
-
-@media (max-width: 768px) {
-  html {
-    scroll-padding-top: 75px;
-  }
-
-  section {
-    scroll-margin-top: 75px;
-  }
-}
-
-/* ==========================================================
-   NEW: EXTRA ANIMATION EFFECTS
-   ========================================================== */
-
-/* 1. Opening curtain: dark panel with the studio name that lifts
-      away when the site first loads (CSS only, no JavaScript). */
-body::after {
-  content: "VARATECT.";
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #151515;
-  color: #f7f7f5;
-  font-size: 0.95rem;
-  letter-spacing: 0.45em;
-  pointer-events: none;
-  animation: curtain-lift 1.2s cubic-bezier(0.77, 0, 0.18, 1) 0.3s forwards;
-}
-
-@keyframes curtain-lift {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-100%);
-  }
-}
-
-/* 2. Keyboard focus ring that fades in softly */
 :focus-visible {
-  outline: 1px solid #151515;
+  outline: 2px solid #a55f45;
   outline-offset: 4px;
-  animation: focus-in 0.25s ease;
 }
 
-@keyframes focus-in {
-  from {
-    outline-offset: 12px;
-    outline-color: transparent;
-  }
+.brand-loader {
+  animation: brand-loader-exit 5s ease-in-out both;
 }
 
-/* 3. Selection colour pop */
-::selection {
-  background: #151515;
-  color: #f7f7f5;
-}
-
-/* 4. Reusable helper classes - add them to any element:
-      <span className="float">  <h2 className="shimmer">  <a className="link-draw"> */
-.float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.shimmer {
-  background: linear-gradient(
-    100deg,
-    currentColor 40%,
-    rgba(160, 160, 155, 0.4) 50%,
-    currentColor 60%
-  );
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 4s linear infinite;
-}
-
-@keyframes shimmer {
-  from {
-    background-position: 150% 0;
-  }
-  to {
-    background-position: -150% 0;
-  }
-}
-
-.link-draw {
+.brand-loader__logo {
   position: relative;
-  display: inline-block;
+  aspect-ratio: 2139 / 1266;
 }
 
-.link-draw::after {
-  content: "";
+.brand-loader__mark,
+.brand-loader__wordmark {
   position: absolute;
-  left: 0;
-  bottom: -3px;
+  inset: 0;
+}
+
+.brand-loader__mark {
+  clip-path: inset(0 0 16% 0);
+}
+
+.brand-loader__mark-image {
+  opacity: 0;
+  animation: brand-mark-appear 0.35s ease-out 2.75s both;
+}
+
+.brand-loader__trace {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  height: 100%;
+  animation: brand-trace-fade 0.25s ease-out 2.75s both;
 }
 
-.link-draw:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.brand-loader__trace-path {
+  fill: none;
+  stroke: #fffaf3;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: brand-trace-draw;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
 }
 
-/* 5. Smooth image fade-in once loaded + gentle lift on hover for buttons */
-img {
-  animation: img-in 0.9s ease both;
+.brand-loader__wordmark {
+  clip-path: inset(85% 0 0);
+  opacity: 0;
+  animation: brand-wordmark-appear 0.65s ease-out 3.25s both;
 }
 
-@keyframes img-in {
-  from {
+@keyframes brand-trace-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes brand-mark-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes brand-trace-fade {
+  to {
     opacity: 0;
   }
 }
 
-button:active {
-  transform: scale(0.97);
+@keyframes brand-wordmark-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes brand-loader-exit {
+  0%,
+  93% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 76px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -243,17 +162,262 @@ button:active {
     scroll-behavior: auto;
   }
 
+  .brand-loader {
+    display: none !important;
+    animation: none !important;
+  }
+
+  .brand-loader__mark-image,
+  .brand-loader__trace,
+  .brand-loader__trace-path,
+  .brand-loader__wordmark {
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {
+    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-    animation-delay: 0s !important;
   }
+}
 
-  body::after {
-    display: none;
+[data-site-theme="dark"] {
+  background-color: #142019;
+  color: #edf2eb;
+  color-scheme: dark;
+}
+
+[data-site-theme="dark"] main {
+  background-color: #142019 !important;
+  color: #edf2eb;
+}
+
+[data-site-theme="dark"] .site-header {
+  border-color: rgb(237 242 235 / 12%);
+  background-color: rgb(20 32 25 / 95%);
+  color: #edf2eb;
+}
+
+[data-site-theme="dark"] .site-header-logo {
+  filter: brightness(0) invert(1);
+}
+
+[data-site-theme="dark"] .site-header-wordmark {
+  color: #edf2eb !important;
+}
+
+[data-site-theme="dark"] .site-header-descriptor {
+  color: #c1cdc1 !important;
+}
+
+[data-site-theme="dark"] .site-header-cta,
+[data-site-theme="dark"] .home-hero-cta {
+  background-color: #d7e4d1 !important;
+  color: #17231b !important;
+}
+
+[data-site-theme="dark"] .site-header-cta:hover,
+[data-site-theme="dark"] .home-hero-cta:hover {
+  background-color: #b6cba9 !important;
+}
+
+[data-site-theme="dark"] .site-theme-toggle,
+[data-site-theme="dark"] .site-menu-button {
+  border-color: rgb(237 242 235 / 24%);
+  color: #edf2eb;
+}
+
+[data-site-theme="dark"] .site-theme-toggle:hover {
+  background-color: #26362f;
+}
+
+[data-site-theme="dark"] .site-mobile-nav {
+  border-color: rgb(237 242 235 / 14%);
+}
+
+[data-site-theme="dark"] main.home-page {
+  background-color: #142019 !important;
+}
+
+[data-site-theme="dark"] .brand-loader {
+  background-color: #142019 !important;
+}
+
+[data-site-theme="dark"] .home-leaf-overlay {
+  background-image: linear-gradient(
+    to right,
+    rgb(20 32 25 / 72%),
+    rgb(20 32 25 / 56%) 52%,
+    rgb(20 32 25 / 40%)
+  ) !important;
+}
+
+[data-site-theme="dark"] #studio,
+[data-site-theme="dark"] #approach,
+[data-site-theme="dark"] [class*="bg-[#dfe9df]"] {
+  background-color: #1b2a20 !important;
+}
+
+[data-site-theme="dark"] .process-flow-node {
+  border-color: rgb(185 209 173 / 45%);
+  background-color: #1b2a20;
+}
+
+[data-site-theme="dark"] .process-flow-card {
+  border-color: rgb(237 242 235 / 12%);
+  background-color: #203226;
+}
+
+[data-site-theme="dark"] .process-flow-card:hover {
+  border-color: rgb(185 209 173 / 45%);
+  box-shadow: 0 16px 36px rgb(0 0 0 / 16%);
+}
+
+[data-site-theme="light"] .process-flow-card:hover {
+  border-color: rgb(82 108 78 / 35%);
+  box-shadow: 0 16px 36px rgb(32 35 31 / 8%);
+}
+
+[data-site-theme="dark"] [class*="bg-[#e8efe7]"] {
+  background-color: #203226 !important;
+}
+
+[data-site-theme="dark"] [class*="bg-[#f1f5ef]"] {
+  background-color: #203226 !important;
+}
+
+[data-site-theme="dark"] [class*="bg-[#d3ddd2]"] {
+  background-color: #29392e !important;
+}
+
+[data-site-theme="dark"] [class*="bg-[#e7e6e1]"] {
+  background-color: #29392e !important;
+}
+
+[data-site-theme="dark"] [class*="bg-[#d5dfd3]"] {
+  background-color: #2a3a2f !important;
+}
+
+[data-site-theme="dark"] [class*="bg-white"] {
+  background-color: #29392e !important;
+  color: #edf2eb;
+}
+
+[data-site-theme="dark"] [class*="bg-[#526c4e]"] {
+  background-color: #35573a !important;
+}
+
+[data-site-theme="dark"] a[class*="bg-[#e8efe7]"],
+[data-site-theme="dark"] a[class*="bg-[#26362f]"],
+[data-site-theme="dark"] button[class*="bg-[#26362f]"] {
+  background-color: #d7e4d1 !important;
+  color: #17231b !important;
+}
+
+[data-site-theme="dark"] .home-service-card {
+  border-color: rgb(237 242 235 / 12%) !important;
+  background-color: #203226 !important;
+}
+
+[data-site-theme="dark"] .home-perspective,
+[data-site-theme="dark"] .site-footer {
+  background-color: #111b15 !important;
+}
+
+[data-site-theme="dark"] .home-contact {
+  background-color: #294532 !important;
+}
+
+[data-site-theme="dark"] .home-hero-metrics {
+  border-color: rgb(237 242 235 / 24%);
+}
+
+[data-site-theme="dark"] .home-hero-metric-rule {
+  background-color: rgb(237 242 235 / 30%);
+}
+
+[data-site-theme="dark"] .home-hero-secondary {
+  border-color: rgb(237 242 235 / 45%);
+}
+
+[data-site-theme="dark"] .home-process-grid,
+[data-site-theme="dark"] .home-process-step,
+[data-site-theme="dark"] [class*="border-[#26362f]"],
+[data-site-theme="dark"] [class*="border-[#20231f]"],
+[data-site-theme="dark"] [class*="border-black"] {
+  border-color: rgb(237 242 235 / 18%) !important;
+}
+
+[data-site-theme="dark"] [class*="text-[#20231f]"],
+[data-site-theme="dark"] [class*="text-[#26362f]"],
+[data-site-theme="dark"] [class*="text-[#435546]"],
+[data-site-theme="dark"] [class*="text-[#454d46]"],
+[data-site-theme="dark"] [class*="text-[#343b35]"],
+[data-site-theme="dark"] [class*="text-[#4f574f]"],
+[data-site-theme="dark"] [class*="text-[#373c36]"],
+[data-site-theme="dark"] [class*="text-[#50574f]"],
+[data-site-theme="dark"] [class*="text-[#66785e]"],
+[data-site-theme="dark"] [class*="text-[#5e635c]"],
+[data-site-theme="dark"] [class*="text-[#6b6e67]"],
+[data-site-theme="dark"] [class*="text-[#646961]"],
+[data-site-theme="dark"] [class*="text-[#555950]"],
+[data-site-theme="dark"] [class*="text-[#687067]"],
+[data-site-theme="dark"] [class*="text-[#74756e]"],
+[data-site-theme="dark"] [class*="text-[#354b37]"],
+[data-site-theme="dark"] [class*="text-[#92978f]"],
+[data-site-theme="dark"] [class*="text-[#3d443d]"],
+[data-site-theme="dark"] [class*="text-[#8b9087]"],
+[data-site-theme="dark"] [class*="text-[#858a82]"],
+[data-site-theme="dark"] [class*="text-[#414740]"],
+[data-site-theme="dark"] [class*="text-[#4f5a50]"],
+[data-site-theme="dark"] .text-neutral-500,
+[data-site-theme="dark"] .text-neutral-400 {
+  color: #d7e1d6 !important;
+}
+
+[data-site-theme="dark"] [class*="text-[#526c4e]"] {
+  color: #b9d1ad !important;
+}
+
+[data-site-theme="dark"] input,
+[data-site-theme="dark"] select,
+[data-site-theme="dark"] textarea {
+  border-color: rgb(237 242 235 / 20%);
+  background-color: #29392e;
+  color: #edf2eb;
+}
+
+[data-site-theme="dark"] input::placeholder,
+[data-site-theme="dark"] textarea::placeholder {
+  color: #aab8a9;
+  opacity: 1;
+}
+
+@media (max-width: 1023px) {
+  .process-flow-track::before {
+    position: absolute;
+    top: 1.25rem;
+    bottom: 1.25rem;
+    left: 1.1875rem;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      rgb(82 108 78 / 55%),
+      rgb(82 108 78 / 12%)
+    );
+    content: "";
+  }
+}
+
+@media (max-width: 1023px) {
+  [data-site-theme="dark"] .process-flow-track::before {
+    background: linear-gradient(
+      to bottom,
+      rgb(185 209 173 / 55%),
+      rgb(185 209 173 / 12%)
+    );
   }
 }
